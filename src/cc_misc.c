@@ -3,7 +3,7 @@
 int comp_get_line_number (void)
 {
   //implemente esta função
-  return -1;
+  return line_counter;
 }
 
 void yyerror (char const *mensagem)

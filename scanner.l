@@ -3,6 +3,9 @@
 */
 %{
 #include "parser.h" //arquivo automaticamente gerado pelo bison
+#include "cc_misc.h" // necessário para o contador de linhas
+
+line_counter = 1;
 %}
 
 DIGIT    [0-9]
@@ -18,6 +21,8 @@ false                   { return TK_LIT_FALSE; }
 \'.\'                   { return TK_LIT_CHAR; }
 \"[^"]*\"               { return TK_LIT_STRING; }
 
-.+                      { return TOKEN_ERRO;}
+[ \t]+
+\n                      { line_counter++; }
+.+                      { return TOKEN_ERRO; }
 
 %%
