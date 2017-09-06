@@ -17,9 +17,14 @@ LETTERS_ [_a-zA-Z]
 
 {INTEGER}               { 
 			  dte_t *simbolo = (dte_t*)malloc(sizeof(dte_t));
+			  dte_t *_simbolo;
+
 			  simbolo->line = line_counter;
 			  char *lexema = strdup(yytext);
-                          dict_put(dict, lexema, simbolo);
+                          _simbolo = dict_put(dict, lexema, simbolo);
+			  if (simbolo != _simbolo){
+			     _simbolo->line = simbolo->line;
+			  }
 			  return TK_LIT_INT;
 			}
 
@@ -27,7 +32,22 @@ LETTERS_ [_a-zA-Z]
 true                    { return TK_LIT_TRUE; }
 false                   { return TK_LIT_FALSE; }
 \'.\'                   { return TK_LIT_CHAR; }
-\"[^"]*\"               { return TK_LIT_STRING; }
+\"[^"]*\"               {
+
+			  dte_t *simbolo = (dte_t*)malloc(sizeof(dte_t));
+			  dte_t *_simbolo;
+			  simbolo->line = line_counter;
+			  char *lexema = strdup(yytext);
+			  lexema[strlen(lexema)-1] = '\0';
+			  lexema = &(lexema[1]);
+
+                          _simbolo = dict_put(dict, lexema, simbolo);
+			  if (simbolo != _simbolo){
+			     _simbolo->line = simbolo->line;
+			  }
+
+			  return TK_LIT_STRING;
+}
 
 [ \t]+
 \n                      { line_counter++; }
