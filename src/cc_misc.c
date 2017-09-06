@@ -14,6 +14,9 @@ void yyerror (char const *mensagem)
 void main_init (int argc, char **argv)
 {
   //implemente esta função com rotinas de inicialização, se necessário
+	if (!dict){
+		dict = dict_new();
+	}
 }
 
 void main_finalize (void)

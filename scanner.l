@@ -6,6 +6,7 @@
 #include "cc_misc.h" // necessário para o contador de linhas
 
 line_counter = 1;
+
 %}
 
 DIGIT    [0-9]
@@ -14,7 +15,14 @@ LETTERS_ [_a-zA-Z]
 
 %%
 
-{INTEGER}               { return TK_LIT_INT; }
+{INTEGER}               { 
+			  dte_t *simbolo = (dte_t*)malloc(sizeof(dte_t));
+			  simbolo->line = line_counter;
+			  char *lexema = strdup(yytext);
+                          dict_put(dict, lexema, simbolo);
+			  return TK_LIT_INT;
+			}
+
 {INTEGER}\.{DIGIT}+     { return TK_LIT_FLOAT; }
 true                    { return TK_LIT_TRUE; }
 false                   { return TK_LIT_FALSE; }
